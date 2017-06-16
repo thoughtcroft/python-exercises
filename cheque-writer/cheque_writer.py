@@ -96,7 +96,9 @@ def write_cheque(number):
         if factor == 100:
             result.append('and')
 
-    # remove any trailing comma
+    # remove any trailing comma or and
+    if result[-1] == 'and':
+        result.pop(-1)
     if result[-1][-1] == ',':
         result[-1] = result[-1][:-1]
     result.append('DOLLARS AND')
