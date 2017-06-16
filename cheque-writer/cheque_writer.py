@@ -25,15 +25,15 @@ KEY_POWERS_OF_TEN = list(10**n for n in (9, 6, 3, 2, 0))
 
 def factorize(number, factors, result=None):
     """Divide a number into the supplied factors"""
-    if result == None: result = []
+    if result is None:
+        result = []
     factor = max_factor(number, factors)
     amount = num_factor(number, factor)
     remain = remainder(number, factor)
     result.append((amount, factor))
     if remain == 0:
         return result
-    else:
-        return factorize(remain, factors, result)
+    return factorize(remain, factors, result)
 
 def max_factor(number, factors):
     """Determines the largest dictionary value present in a number"""
@@ -110,6 +110,7 @@ def write_cheque(number):
 
 
 def main():
+    """Ask user for the cheque amount and print it in English"""
     print()
     amount = input("Enter the cheque amount in dollars and cents (numbers only, < 2 billion): ")
 

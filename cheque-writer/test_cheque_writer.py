@@ -7,6 +7,7 @@ from cheque_writer import *
 
 
 class ChequeWriterTestCase(unittest.TestCase):
+    """Unit tests for Cheque Writer function"""
 
     def test_dictionary_produces_words(self):
         """Does the dictionary produce words for numbers?"""
@@ -65,6 +66,8 @@ class ChequeWriterTestCase(unittest.TestCase):
         """Convert a number into English"""
         self.assertEqual(write_cheque(1357256.32),
                 "one million, three hundred and fifty seven thousand, two hundred and fifty six DOLLARS AND thirty two CENTS")
+        self.assertEqual(write_cheque(123000),
+                "one hundred and twenty three thousand DOLLARS AND zero CENTS")
 
     def test_dollars_and_cents(self):
         """Split a number into dollar and cents portions"""
