@@ -103,10 +103,12 @@ def write_cheque(number):
     result.append('CENTS')
     return " ".join(result)
 
-
-
 def main():
-    pass
+    print()
+    number = input("Enter the value of the cheque in dollars and cents only: ")
+    print()
+    print("Cheque amount is: {}".format(write_cheque(float(number))))
+    print()
 
 
 if __name__ == '__main__':
