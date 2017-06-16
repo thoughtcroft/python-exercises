@@ -85,6 +85,7 @@ def write_cheque(number):
     assert number < 2 * 10**9
     dollars, cents = dollars_and_cents(number)
     result = []
+
     for count, factor in major_factors(dollars):
         if count == 1:
             result.append('one')
@@ -94,6 +95,10 @@ def write_cheque(number):
             result.append(word(factor))
         if factor == 100:
             result.append('and')
+
+    # remove any trailing comma
+    if result[-1][-1] == ',':
+        result[-1] = result[-1][:-1]
     result.append('DOLLARS AND')
 
     if cents == 0:
@@ -103,11 +108,16 @@ def write_cheque(number):
     result.append('CENTS')
     return " ".join(result)
 
+
 def main():
     print()
-    number = input("Enter the value of the cheque in dollars and cents only: ")
+    amount = input("Enter the cheque amount in dollars and cents (numbers only, < 2 billion): ")
+
+    if float(amount) >= 2000000000 or float(amount) <= 0:
+        print("That amount is out of range!")
+        exit()
     print()
-    print("Cheque amount is: {}".format(write_cheque(float(number))))
+    print("Cheque amount is: {}".format(write_cheque(float(amount))))
     print()
 
 
