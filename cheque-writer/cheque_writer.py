@@ -4,7 +4,7 @@
 
 """Cheque Writer
 
-Turns a numerical monetary value as input and outputs
+Takes a numerical monetary value as input and outputs
 its English equivalent so it can be written on a cheque"""
 
 # python2 and python3 portability
