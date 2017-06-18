@@ -52,7 +52,7 @@ def normalise(expression):
     - don't subtract from a number more than 10 x greater
     - only subtract from powers of 10
     """
-    if not list(x for x, _ in expression if x == 4)):
+    if not list(x for x, _ in expression if x == 4):
         return expression
     result = []
     prev = None

@@ -1,63 +1,60 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+# pylint: disable=redefined-builtin
+
+"""Roman Numerals unit tests"""
 
 import unittest
+from ddt import ddt, data, unpack
+from roman_numerals import numeral, factorize, round_to_ten, minuend, normalise, convert
 
-from roman_numerals import *
-
-
+@ddt
 class RomanNumeralsTestCase(unittest.TestCase):
     """Unit tests for Roman Numeral function"""
 
-    def test_dictionary_produces_numerals(self):
+    @data((1, "I"), (50, "L"), (1000, "M"))
+    @unpack
+    def test_dictionary_numerals(self, first, second):
         """Does the dictionary produce roman numerals?"""
-        for x, y in [(1, "I"), (50, "L"), (1000, "M")]:
-            self.assertEqual(numeral(x), y)
+        self.assertEqual(numeral(first), second)
         with self.assertRaises(KeyError):
             numeral(27)
 
-    def test_factorize_splits_into_key_chunks(self):
+    @data((4, [(4, 1)]),
+          (100, [(1, 100)]),
+          (357, [(3, 100), (1, 50), (1, 5), (2, 1)]),
+          (1981, [(1, 1000), (1, 500), (4, 100), (1, 50), (3, 10), (1, 1)]))
+    @unpack
+    def test_factorize_splits(self, first, second):
         """Test that a number can be split into key numerals"""
-        for x, y in [
-            (4, [(4, 1)]),
-            (100, [(1, 100)]),
-            (357, [(3, 100), (1, 50), (1, 5), (2, 1)]),
-            (1981, [(1, 1000), (1, 500), (4, 100), (1, 50), (3, 10), (1, 1)])
-        ]:
-            self.assertEqual(factorize(x), y)
+        self.assertEqual(factorize(first), second)
 
-    def test_find_previous_power_of_ten(self):
+    @data((0, 1), (4, 10), (10, 10), (78, 100), (567, 1000))
+    @unpack
+    def test_powers_of_ten(self, first, second):
         """Test that we can calculate the next power of 10"""
-        for x, y in [
-            (0, 1), (4, 10), (10, 10), (78, 100), (567, 1000)
-        ]:
-            self.assertEqual(round_to_ten(x), y)
+        self.assertEqual(round_to_ten(first), second)
 
-    def test_minuend_returns_next_biggest_factor(self):
+    @data([(1, 1), (1, 5)], [(1, 50), (1, 100)])
+    @unpack
+    def test_minuend_returns_factor(self, first, second):
         """Test that minuend is based on next largest factor"""
-        for x, y in [
-            [(1, 1), (1, 5)]
-        ]:
-            self.assertEqual(minuend(x), y)
+        self.assertEqual(minuend(first), second)
 
-    def test_normalise_expression(self):
+    @data({'first': [(1, 50), (4, 10), (1, 5), (4, 1)],
+           'second': [(1, 10), (1, 100), (1, 1), (1, 10)]})
+    @unpack
+    def test_normalise_expression(self, first, second):
         """Turn an invalid expression into a valid one"""
-        for x, y in [
-            ([(1, 50), (4, 10), (1, 5), (4, 1)], [(1, 10), (1, 100), (1, 1), (1, 10)])
-        ]:
-            self.assertEqual(normalise(x), y)
+        self.assertEqual(normalise(first), second)
 
-    def test_convert_number_to_roman_numerals(self):
+    @data((1, "I"), (4, "IV"), (10, "X"), (7, "VII"),
+          (99, "XCIX"), (109, "CIX"), (700, "DCC"),
+          (999, "CMXCIX"), (1981, "MCMLXXXI"))
+    @unpack
+    def test_convert_number(self, first, second):
         """Do numbers get correctly turned into roman numerals?"""
-        for x, y in [
-            (1, "I"), (4, "IV"), (10, "X"), (7, "VII"),
-            (99, "XCIX"), (109, "CIX"), (700, "DCC"),
-            (999, "CMXCIX"), (1981, "MCMLXXXI")
-        ]:
-            self.assertEqual(convert(x), y)
-
-
-
+        self.assertEqual(convert(first), second)
 
 
 if __name__ == '__main__':
