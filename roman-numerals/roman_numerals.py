@@ -82,9 +82,9 @@ def convert(number):
 def main():
     """Ask user for the decimal number and print it in Roman Numerals"""
     print()
-    number = input("Enter the number to be converted (whole numbers only, <= 4000): ")
+    number = input("Enter the number to be converted (whole numbers only, < 4000): ")
 
-    if float(number) > 4000 or float(number) <= 0:
+    if float(number) >= 4000 or float(number) <= 0:
         print("That number is out of range!")
         exit()
     print()
