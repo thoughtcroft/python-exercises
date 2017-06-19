@@ -4,48 +4,25 @@
 
 """Roman Numerals
 
-Converts an integer up to and including 3000
+Converts an integer less than 4000
 into the equivalent Roman Numerals"""
 
 # python2 and python3 portability
 from __future__ import print_function
 from builtins import input
+from factorize import factorize
 
 ROMAN_NUMERALS = {
     1: "I", 5: "V", 10: "X", 50: "L",
     100: "C", 500: "D", 1000: "M"
     }
 
+
 def numeral(number):
     """Returns the Roman Numeral for the key number"""
     return ROMAN_NUMERALS[number]
 
-def factorize(number, result=None):
-    """Divide a number into the core Roman Numerals"""
-    if result is None:
-        result = []
-    factors = ROMAN_NUMERALS
-    factor = max_factor(number, factors)
-    amount = num_factor(number, factor)
-    remain = remainder(number, factor)
-    result.append((amount, factor))
-    if remain == 0:
-        return result
-    return factorize(remain, result)
-
-def max_factor(number, factors):
-    """Determines the largest dictionary value present in a number"""
-    return max(n for n in factors if n <= number)
-
-def num_factor(number, factor):
-    """Return the number of factors in the number"""
-    return number // factor
-
-def remainder(number, factor):
-    """Return the remainder after removing factor"""
-    return number % factor
-
-def normalise(expression):
+def normalize(expression):
     """Ensure expression satisfies Roman Numeral rules
 
     if 4 numerals then work out subtract term
@@ -60,17 +37,14 @@ def normalise(expression):
         count, factor = elem
         if count == 4:
             if power_of_ten(prev):
-                result.append((1, factor))
                 prev = minuend(elem)
-                result.append(prev)
             else:
                 result.pop()
-                result.append((1, factor))
                 prev = minuend(prev)
-                result.append(prev)
+            result.append((1, factor))
         else:
             prev = elem
-            result.append(prev)
+        result.append(prev)
     return result
 
 def power_of_ten(term):
@@ -96,10 +70,11 @@ def round_to_ten(number):
 
 def convert(number):
     """Return the Roman Numerals coresponding to number"""
-    assert number <= 3000
+    assert number < 4000
     number = int(number)
     result = []
-    for count, factor in normalise(factorize(number)):
+    expression = factorize(number, ROMAN_NUMERALS)
+    for count, factor in normalize(expression):
         result.append(numeral(factor) * count)
     return "".join(result)
 

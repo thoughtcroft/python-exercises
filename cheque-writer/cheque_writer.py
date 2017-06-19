@@ -10,6 +10,7 @@ its English equivalent so it can be written on a cheque"""
 # python2 and python3 portability
 from __future__ import print_function
 from builtins import input
+from factorize import factorize
 
 NUMBER_WORDS = {
     0: "zero", 1: "one", 2: "two", 3: "three", 4: "four", 5: "five",
@@ -22,30 +23,6 @@ NUMBER_WORDS = {
     }
 
 KEY_POWERS_OF_TEN = list(10**n for n in (9, 6, 3, 2, 0))
-
-def factorize(number, factors, result=None):
-    """Divide a number into the supplied factors"""
-    if result is None:
-        result = []
-    factor = max_factor(number, factors)
-    amount = num_factor(number, factor)
-    remain = remainder(number, factor)
-    result.append((amount, factor))
-    if remain == 0:
-        return result
-    return factorize(remain, factors, result)
-
-def max_factor(number, factors):
-    """Determines the largest dictionary value present in a number"""
-    return max(n for n in factors if n <= number)
-
-def num_factor(number, factor):
-    """Return the number of factors in the number"""
-    return number // factor
-
-def remainder(number, factor):
-    """Return the remainder after removing factor"""
-    return number % factor
 
 def major_factors(number):
     """Return the major power-of-ten factors"""
@@ -76,9 +53,9 @@ def convert_to_words(number):
 
 def dollars_and_cents(number):
     """Return dollars and cents portions"""
-    parts = str(number).split('.')
-    parts.append('0')
-    return list(int(x) for x in parts[:2])
+    dollars = int(number)
+    cents = int(round((number - dollars) * 100))
+    return (dollars, cents)
 
 def write_cheque(number):
     """Return the English equivalent of a cheque number"""

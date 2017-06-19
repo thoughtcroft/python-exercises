@@ -1,13 +1,9 @@
-#!/usr/bin/env python
 # -*- coding: utf-8 -*-
-# pylint: disable=redefined-builtin
 
 """Factorize
 
 Helpers to create expressions of numbers factored into key
 amounts for use in numbers to words, Roman Numerals etc"""
-
-FACTORS = list(10**n for n in (9, 6, 3, 2, 0))
 
 def factorize(number, factors, result=None):
     """Divide a number into the supplied factors
