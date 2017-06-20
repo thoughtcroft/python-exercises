@@ -12,6 +12,7 @@ from __future__ import print_function
 from builtins import input
 from factorize import factorize
 
+
 ROMAN_NUMERALS = {
     1: "I", 5: "V", 10: "X", 50: "L",
     100: "C", 500: "D", 1000: "M"
@@ -64,11 +65,13 @@ def minuend(term):
 def round_to_ten(number):
     """Round number up to next power of 10"""
     count = len(str(int(number)))
-    if number % 10 == 0:
+    if number == 1:
+        count = 0
+    elif number % 10 == 0:
         count = count - 1
     return 10 ** count
 
-def convert(number):
+def convert_to_numerals(number):
     """Return the Roman Numerals coresponding to number"""
     assert number < 4000
     number = int(number)
@@ -88,7 +91,7 @@ def main():
         print("That number is out of range!")
         exit()
     print()
-    print("{} is the same as {}".format(number, convert(int(number))))
+    print("{} is the same as {}".format(number, convert_to_numerals(int(number))))
     print()
 
 

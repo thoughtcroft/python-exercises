@@ -6,8 +6,8 @@
 
 import unittest
 from ddt import ddt, data, unpack
-from roman_numerals import (numeral, round_to_ten,
-                            minuend, normalize, convert)
+from roman_numerals import (numeral, round_to_ten, minuend,
+                            normalize, convert_to_numerals)
 
 @ddt
 class RomanNumeralsTestCase(unittest.TestCase):
@@ -21,7 +21,7 @@ class RomanNumeralsTestCase(unittest.TestCase):
         with self.assertRaises(KeyError):
             numeral(27)
 
-    @data((0, 1), (4, 10), (10, 10), (78, 100), (567, 1000))
+    @data((0, 1), (1, 1), (4, 10), (10, 10), (78, 100), (567, 1000))
     @unpack
     def test_powers_of_ten(self, first, second):
         """Test that we can calculate the next power of 10"""
@@ -40,13 +40,13 @@ class RomanNumeralsTestCase(unittest.TestCase):
         """Turn an invalid expression into a valid one"""
         self.assertEqual(normalize(first), second)
 
-    @data((1, "I"), (4, "IV"), (10, "X"), (7, "VII"),
+    @data((1, "I"), (4, "IV"), (9, "IX"), (10, "X"), (7, "VII"),
           (99, "XCIX"), (109, "CIX"), (700, "DCC"),
           (999, "CMXCIX"), (1981, "MCMLXXXI"))
     @unpack
     def test_convert_number(self, first, second):
         """Do numbers get correctly turned into roman numerals?"""
-        self.assertEqual(convert(first), second)
+        self.assertEqual(convert_to_numerals(first), second)
 
 
 if __name__ == '__main__':
