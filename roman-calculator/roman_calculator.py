@@ -10,7 +10,8 @@ Perform simple addition of Roman Numerals"""
 from __future__ import print_function
 from builtins import input
 from itertools import groupby
-from roman_numerals import power_of_ten, ROMAN_NUMERALS
+from roman_numerals import (power_of_ten, ROMAN_NUMERALS,
+                            convert_to_numerals)
 
 DECIMALS = dict([(v, k) for k, v in ROMAN_NUMERALS.iteritems()])
 
@@ -29,13 +30,18 @@ def validate(numerals):
     except KeyError:
         # must only contain valid numerals
         return False
+
     if list(x for x, _ in expression if x > 3):
         # no more than 3 of the same consecutive numerals
         return False
-    if len(expression) == 1:
-        return True
-    prev = expression[0]
-    for nxt in expression[1:]:
+    prev = None
+    for nxt in expression:
+        count, _ = nxt
+        if (count > 3 or (count == 2 and not
+                          power_of_ten(nxt))):
+            return False
+
+        # test the subtraction rules
         if (less_than(prev, nxt) and not
                 (power_of_ten(prev) and
                  single_term(prev) and
@@ -46,7 +52,7 @@ def validate(numerals):
 
 def convert_to_decimal(numerals):
     """Convert Roman Numerals to decimal equivalent"""
-    #assert validate(numerals)
+    assert validate(numerals)
     prev = None
     total = 0
     for term in parse_numerals(numerals):
@@ -67,25 +73,52 @@ def single_term(term):
 
 def less_than(first, second, multiple=1):
     """Test if an element is less than another one"""
-    if first is None:
-        return False
-    _, f_factor = first
-    _, s_factor = second
-    return f_factor <= s_factor * multiple
+    if not first is None:
+        _, f_factor = first
+        _, s_factor = second
+        return f_factor <= s_factor * multiple
 
 def term_value(term):
     """Return value of expression term"""
     count, factor = term
     return count * factor
 
+def parse_input(equation):
+    """Return an equation broken down into terms"""
+    return list(x.strip() for x in equation.split('+'))
+
 def main():
     """Ask user for the Roman Numeral expression and evaluate it"""
     print()
-    expression = input("Enter the Roman Numeral equation to evaluate: ")
+    equation = input("Enter the Roman Numeral equation to evaluate: ")
+    terms = parse_input(equation)
+    if len(terms) < 2:
+        print()
+        print("Currently you can only add terms!")
+        exit()
 
-    answer = "TBA"
+    # check them for correctness
+    errors = list(x for x in terms if not validate(x))
+    if errors:
+        print()
+        for term in errors:
+            print("{} is not valid".format(term))
+        print()
+        exit()
+
+    # compute the sum
+    numbers = map(convert_to_decimal, terms)
+    total = reduce(lambda x, y: x + y, numbers)
+    if total >= 4000:
+        print()
+        print("-> the result of {} is more than 4000!".format(total))
+        print()
+        exit()
+
+    # and convert back to Roman Numerals
+    result = convert_to_numerals(total)
     print()
-    print("{} = {}".format(expression, answer))
+    print("-> {} = {}".format(equation, result))
     print()
 
 

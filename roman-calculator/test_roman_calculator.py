@@ -8,7 +8,7 @@ import unittest
 from ddt import ddt, data, unpack
 from roman_calculator import (decimal, validate, parse_numerals,
                               term_value, less_than, less_than_ten_times,
-                              convert_to_decimal)
+                              parse_input, convert_to_decimal)
 
 @ddt
 class RomanCalculatorTestCase(unittest.TestCase):
@@ -66,6 +66,12 @@ class RomanCalculatorTestCase(unittest.TestCase):
         """Test that Roman Numerals convert into decimal"""
         self.assertEqual(convert_to_decimal(first), second)
 
+    @data(("I + IV", ["I", "IV"]), ("VI+  X", ["VI", "X"]),
+          ("MCM", ["MCM"]), ("XXX - XX", ["XXX - XX"]))
+    @unpack
+    def test_parse_input(self, first, second):
+        """Test that input is properly split into terms"""
+        self.assertEqual(parse_input(first), second)
 
 
 if __name__ == '__main__':
