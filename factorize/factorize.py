@@ -2,7 +2,7 @@
 
 """Factorize
 
-Helpers to create expressions of numbers factored into key
+Helper to create expressions of numbers factored into key
 amounts for use in numbers to words, Roman Numerals etc"""
 
 def factorize(number, factors, result=None):

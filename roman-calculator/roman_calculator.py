@@ -9,9 +9,11 @@ Perform simple addition of Roman Numerals"""
 # python2 and python3 portability
 from __future__ import print_function
 from builtins import input
+
 from itertools import groupby
-from roman_numerals import (power_of_ten, ROMAN_NUMERALS,
-                            convert_to_numerals)
+from roman_numerals import (convert_to_numerals,
+                            power_of_ten,
+                            ROMAN_NUMERALS)
 
 DECIMALS = dict([(v, k) for k, v in ROMAN_NUMERALS.iteritems()])
 
@@ -62,14 +64,14 @@ def convert_to_decimal(numerals):
         prev = term
     return total
 
-def less_than_ten_times(first, second):
-    """Test if terms obey ten times rule"""
-    return less_than(first, second, multiple=10)
-
 def single_term(term):
     """Test if a term has a single factor"""
     count, _ = term
     return count == 1
+
+def less_than_ten_times(first, second):
+    """Test if terms obey ten times rule"""
+    return less_than(first, second, multiple=10)
 
 def less_than(first, second, multiple=1):
     """Test if an element is less than another one"""

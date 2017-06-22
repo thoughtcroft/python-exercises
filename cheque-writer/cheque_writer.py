@@ -10,6 +10,7 @@ its English equivalent so it can be written on a cheque"""
 # python2 and python3 portability
 from __future__ import print_function
 from builtins import input
+
 from factorize import factorize
 
 NUMBER_WORDS = {
@@ -23,6 +24,7 @@ NUMBER_WORDS = {
     }
 
 KEY_POWERS_OF_TEN = list(10**n for n in (9, 6, 3, 2, 0))
+
 
 def major_factors(number):
     """Return the major power-of-ten factors"""
@@ -78,6 +80,7 @@ def write_cheque(number):
         result.pop(-1)
     if result[-1][-1] == ',':
         result[-1] = result[-1][:-1]
+
     result.append('DOLLARS AND')
 
     if cents == 0:
