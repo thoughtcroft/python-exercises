@@ -10,6 +10,7 @@ into the equivalent Roman Numerals"""
 # python2 and python3 portability
 from __future__ import print_function
 from builtins import input
+
 from factorize import factorize
 
 
@@ -74,13 +75,9 @@ def round_to_ten(number):
 def convert_to_numerals(number):
     """Return the Roman Numerals coresponding to number"""
     assert number < 4000
-    number = int(number)
-    result = []
-    expression = factorize(number, ROMAN_NUMERALS)
-    for count, factor in normalize(expression):
-        result.append(numeral(factor) * count)
+    expression = factorize(int(number), ROMAN_NUMERALS)
+    result = list(numeral(f) * c for c, f in normalize(expression))
     return "".join(result)
-
 
 def main():
     """Ask user for the decimal number and print it in Roman Numerals"""
