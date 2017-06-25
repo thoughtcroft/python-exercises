@@ -41,6 +41,8 @@ def word(number):
 def convert_to_words(number):
     """Return the English version of a small number"""
     assert number < 1000
+    if number == 0:
+        return word(0)
     result = []
     for count, factor in minor_factors(number):
         if factor == 100:
@@ -66,10 +68,7 @@ def write_cheque(number):
     result = []
 
     for count, factor in major_factors(dollars):
-        if count == 1:
-            result.append('one')
-        else:
-            result.append(convert_to_words(count))
+        result.append(convert_to_words(count))
         if factor != 1:
             result.append(word(factor))
         if factor == 100:
@@ -81,13 +80,15 @@ def write_cheque(number):
     if result[-1][-1] == ',':
         result[-1] = result[-1][:-1]
 
-    result.append('DOLLARS AND')
-
-    if cents == 0:
-        result.append(word(0))
+    if dollars == 1:
+        result.append('DOLLAR AND')
     else:
-        result.append(convert_to_words(cents))
-    result.append('CENTS')
+        result.append('DOLLARS AND')
+    result.append(convert_to_words(cents))
+    if cents == 1:
+        result.append('CENT')
+    else:
+        result.append('CENTS')
     return " ".join(result)
 
 
