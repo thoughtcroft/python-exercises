@@ -76,12 +76,7 @@ def write_cheque(number):
                 result.append(word(factor))
             if factor == 100:
                 result.append('and')
-
-        # remove any trailing comma or and
-        if result[-1] == 'and':
-            result.pop(-1)
-        if result[-1][-1] == ',':
-            result[-1] = result[-1][:-1]
+        remove_trailing_terms(result)
         result.append('DOLLARS AND')
 
     if cents == 1:
@@ -91,6 +86,12 @@ def write_cheque(number):
         result.append('CENTS')
     return " ".join(result)
 
+def remove_trailing_terms(result):
+    """Remove any trailing comma or and"""
+    if result[-1] == 'and':
+        result.pop(-1)
+    if result[-1][-1] == ',':
+        result[-1] = result[-1][:-1]
 
 def main():
     """Ask user for the cheque amount and print it in English"""

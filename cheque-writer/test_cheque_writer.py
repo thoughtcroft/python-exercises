@@ -8,7 +8,7 @@ import unittest
 from ddt import ddt, data, unpack
 from cheque_writer import (convert_to_words, dollars_and_cents,
                            major_factors, minor_factors, word,
-                           write_cheque)
+                           remove_trailing_terms, write_cheque)
 
 @ddt
 class ChequeWriterTestCase(unittest.TestCase):
@@ -55,7 +55,9 @@ class ChequeWriterTestCase(unittest.TestCase):
                         "fifty six DOLLARS AND thirty two CENTS")),
           (123000, ("one hundred and twenty three thousand "
                     "DOLLARS AND zero CENTS")),
-          (100.10, "one hundred DOLLARS AND ten CENTS"))
+          (100.10, "one hundred DOLLARS AND ten CENTS"),
+          (1.01, "one DOLLAR AND one CENT"),
+          (1200.21, "one thousand, two hundred DOLLARS AND twenty one CENTS"))
     @unpack
     def test_write_cheque(self, first, second):
         """Convert a number into English"""
@@ -68,6 +70,15 @@ class ChequeWriterTestCase(unittest.TestCase):
         dollars, cents = dollars_and_cents(first)
         self.assertEqual(dollars, second)
         self.assertEqual(cents, third)
+
+    @data((['test', 'no', 'change'], ['test', 'no', 'change']),
+          (['test', 'remove', 'and'], ['test', 'remove']),
+          (['test', 'comma,'], ['test', 'comma']))
+    @unpack
+    def test_remove_trailing_terms(self, first, second):
+        """It removes trailing 'and' and ',' terms"""
+        remove_trailing_terms(first)
+        self.assertEqual(first, second)
 
 
 if __name__ == '__main__':
