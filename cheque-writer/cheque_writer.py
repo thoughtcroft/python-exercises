@@ -67,27 +67,27 @@ def write_cheque(number):
     dollars, cents = dollars_and_cents(number)
     result = []
 
-    for count, factor in major_factors(dollars):
-        result.append(convert_to_words(count))
-        if factor != 1:
-            result.append(word(factor))
-        if factor == 100:
-            result.append('and')
-
-    # remove any trailing comma or and
-    if result[-1] == 'and':
-        result.pop(-1)
-    if result[-1][-1] == ',':
-        result[-1] = result[-1][:-1]
-
     if dollars == 1:
-        result.append('DOLLAR AND')
+        result.append('one DOLLAR AND')
     else:
+        for count, factor in major_factors(dollars):
+            result.append(convert_to_words(count))
+            if factor != 1:
+                result.append(word(factor))
+            if factor == 100:
+                result.append('and')
+
+        # remove any trailing comma or and
+        if result[-1] == 'and':
+            result.pop(-1)
+        if result[-1][-1] == ',':
+            result[-1] = result[-1][:-1]
         result.append('DOLLARS AND')
-    result.append(convert_to_words(cents))
+
     if cents == 1:
-        result.append('CENT')
+        result.append('one CENT')
     else:
+        result.append(convert_to_words(cents))
         result.append('CENTS')
     return " ".join(result)
 
